@@ -2,4 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-
+.login{
+    border: 1px solid red !important;
+}
+.login:focus{
+    border: none !important;
+}
+.login:active{
+    border: none !important;
+}
