@@ -5,11 +5,13 @@ function createNewAcc() {
 let allUsers = [];
 
 let users = localStorage.getItem('user')
+// console.log("🚀 ~ file: app.js:8 ~ users:", users)
 
 if (users !== null) {
     allUsers = JSON.parse(users)
 
 }
+console.log("🚀 ~ file: app.js:6 ~ allUsers:", allUsers)
 
 function signUp() {
     var name = document.querySelector("#signup-firstName")
@@ -24,56 +26,102 @@ function signUp() {
     }
     allUsers.push(user)
     localStorage.setItem('user', JSON.stringify(allUsers))
-    // location.href = "./index.html"
+    location.href = "./index.html"
 
 }
 
+var loginEmail = document.querySelector("#login-email")
+
+var loginPass = document.querySelector("#login-pass")
 var flag = true
-var email = document.querySelector("#login-email");
-var pass = document.querySelector("#login-pass");
 
 function logIn() {
+    console.log("🚀 ~ file: app.js:35 ~ email:", typeof loginEmail.value)
+    console.log("🚀 ~ file: app.js:37 ~ pass:", loginPass.value)
 
+    let foundUserIndex = -1
     for (let i = 0; i < allUsers.length; i++) {
-        if (allUsers[i].email === email.value && allUsers[i].pass === pass.value) {
+        if (allUsers[i].email === loginEmail.value && allUsers[i].pass === loginPass.value) {
+
+            console.log(i)
+            foundUserIndex = i
+            currentUserIndex = 2
+            console.log(foundUserIndex)
+            console.log("hello");
             flag = false
+            var loginID = loginEmail.value
+            break;
 
-        } break;
-    }
-    if (!flag) {
-        location.href = "./welcome.html";
 
-    } else {
-        if (email.value === "" || pass.value === "") {
-            email.style.border = "1px solid red"
-        } else {
-            alert("create your account")
         }
+
     }
+
+
+    if (!flag) {
+        console.log("🚀 ~ file: app.js:53 ~ logIn ~ loginID:", loginID)
+
+        window.location.href = `welcome.html?flag=false&&loginID=${loginID}`;
+
+    }
+
+
+    else {
+        if ((loginEmail.value === "" || loginPass.value === "") || (loginEmail.value === " " || loginPass.value === " ")) {
+            loginEmail.style.border = "1px solid red"
+            loginPass.style.border = "1px solid red"
+        } else if (loginEmail.value.slice(-4) !== ".com") {
+            alert("invalid email")
+        }
+        else {
+            alert('create your account')
+        }
+
+
+    }
+}
+
+
+
+
+
+
+// }
+
+
+
+
+function logout() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const abc = urlParams.get('flag');
+    const loginID = urlParams.get("loginID");
+    console.log(loginID)
+    console.log(abc)
+    if (abc) {
+        console.log("hello")
+
+        for (let i = 0; i < allUsers.length; i++) {
+            if (allUsers[i].email === loginID) {
+                allUsers.splice(i, 1)
+                console.log(allUsers)
+                break;
+            }
+            location.href = "./index.html"
+
+        }
+
+    }
+    localStorage.setItem('user', JSON.stringify(allUsers))
 
 }
 
 
 function border() {
-
-    email.style.border = ""
-    email.className = "w-80 border border-gray-300 py-2 ps-2 rounded-lg my-2 outline-none focus:outline-1 focus:outline-blue-500 focus:outline-offset-0"
-
-}
-// console.log(flag)
-
-function logout() {
-    console.log(allUsers)
-    for (let i = 0; i < allUsers.length; i++) {
-        if (flag) {
-            allUsers.splice(i, 1)
-            console.log(allUsers)
-            localStorage.setItem("user", JSON.stringify(allUsers))
-
-        }
-        break;
-    }
-    location.href = "./index.html"
+    loginEmail.style.border = ""
+    loginEmail.className = "w-80 border border-gray-300 py-2 ps-2 rounded-lg my-2 outline-none focus:outline-1 focus:outline-blue-500 focus:outline-offset-0"
 }
 
-
+function passborder() {
+    loginPass.style.border = ""
+    loginPass.className = "w-80 border border-gray-300 py-2 ps-2 rounded-lg my-2 outline-none focus:outline-1 focus:outline-blue-500 focus:outline-offset-0"
+}
